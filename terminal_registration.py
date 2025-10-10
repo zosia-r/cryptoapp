@@ -1,12 +1,10 @@
-import pandas as pd
-
-# Idea: use pd.DataFrame to store all the information about the users
-# Is probably a bit overkill, so a list/array of dictionaries? or sth similar would probably be sufficient
-user_list = pd.DataFrame(columns=["username", "password"])
+# Empty users, which is filled with dicts of users with "username" and "password"
+user_list = {}
 
 
+def register():
 
-def terminal_register():
+    global user_list
 
     loop1 = True
     loop2 = True
@@ -24,13 +22,53 @@ def terminal_register():
         pwd_clear = input("Please select your password: ")
         loop2 = False
 
-    print(f"Your username is ", {username})
-    print(f"Your password is: ", {pwd_clear})
-    
-    new_user = {"username": username, "password": pwd}
-    global user_list
-    user_list = pd.concat([user_list, pd.DataFrame([new_user])], ignore_index=True)
+    #print(f"Your username is ", {username})
+    #print(f"Your password is: ", {pwd_clear})
+
+    if username not in user_list:
+      user_list[username] = {
+        'password': pwd_clear
+      }
+    else:
+        print("Username is already taken.")
+        return
 
     print("You were successfully added as a new user :)")
 
-terminal_register()
+
+def authenticate():
+    # would probably be prettier if we pass it as an input parameter instead of using a global variable
+    global user_list 
+    loop1 = True
+    loop2 = True
+
+    while loop1:
+        username = input("Please input your username: ")
+        loop1 = False
+
+    while loop2:
+        pwd_clear = input("Please input your password: ")
+        loop2 = False
+
+    # Fails if its either the wrong password or the username does not exist
+    # Important to check it after both, username and pwd, are already inputted
+    if username not in user_list:
+        print("Username or password wrong.")
+    elif user_list[username]["password"] != pwd_clear:
+        print("Username or password wrong.")
+    else:
+        print("Successfully authenticated!")
+        
+
+def register_or_authenticate():
+    selection = input("Do you already have an account? y for yes and n for no: ")
+    if selection == "y":
+        authenticate()
+    elif selection == "n":
+        register()
+    else:
+        print("Sorry, we couldn't understand your input. Please restart the program and try again.")
+
+#register()
+#authenticate()
+register_or_authenticate()
