@@ -1,0 +1,35 @@
+import os
+from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
+
+# We encrypt the data when it is in the format of a json string
+data = b"json string"
+
+# The key is user-specific
+def generate_data_authentication_key():
+    key = ChaCha20Poly1305.generate_key()
+    return key
+
+def encrypt_data(data, key):
+    # NEVER REUSE A NONCE
+    chacha = ChaCha20Poly1305(key)
+    nonce = os.urandom(12)
+    ct = chacha.encrypt(nonce, data, None)
+    return nonce, ct
+
+
+def decrypt_data(nonce, ct, key):
+    chacha = ChaCha20Poly1305(key)
+    decrypted_data = chacha.decrypt(nonce, ct, None)
+    return decrypt_data
+
+def test():
+    key = generate_data_authentication_key()
+    nonce, ct = encrypt_data(data, key)
+    print("Data encrypted.")
+    decrypt_data(nonce, ct, key)
+    print("Data decrypted")
+
+test()
+
+
+
