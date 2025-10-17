@@ -1,0 +1,35 @@
+import os
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+# Second salt needed
+# Is randomly generated
+# TODO change?
+# derive key from password
+# pwd: given pwd
+# TODO at the moment: key is derived from whole password
+# TODO later: key should be derived from the pwd token
+def derive_key(pwd):
+    salt = os.urandom(16)
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=1_200_000,
+    )
+    key = kdf.derive(pwd)
+    return salt, key
+
+# Verifies if the given pwd matches the stored pwd of the given username
+# pwd: given pwd
+# key: the stored key to the corresponding, given username
+# No return type needed, it raises an exception if it does not match
+# TODO probably handle exception 
+def verify_key(pwd, key, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=1_200_000,
+    )
+    kdf.verify(pwd, key)
