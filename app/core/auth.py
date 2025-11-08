@@ -21,7 +21,7 @@ def register_user(username, password):
     
     for user in users:
         if user["username"] == username:
-            raise ValueError("Username is already taken.")
+            return False
         
     users.append({"username": username, "password": password})
 
