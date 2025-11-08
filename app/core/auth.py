@@ -44,9 +44,10 @@ def create_user_file(username, users_directory=USERS_DIRECTORY):
 
 def is_strong_password(password):
     """
-    Minimum 8 characters, at least 1 uppercase, 1 lowercase, 1 number, 1 special character
+    Minimum 8 characters, maximum 64 characters,
+    at least 1 uppercase, 1 lowercase, 1 number, 1 special character
     """
-    if len(password) < 8:
+    if len(password) < 8 or len(password) > 64:
         return False
     if not re.search(r"[A-Z]", password):
         return False
@@ -58,6 +59,14 @@ def is_strong_password(password):
         return False
     return True
 
+
+def is_valid_username(username):
+    """
+    Username must be alphanumeric and between 3 and 20 characters
+    """
+    if not re.match(r"^[a-zA-Z0-9]{3,20}$", username):
+        return False
+    return True
 
 
 # AUTHENTICATE
