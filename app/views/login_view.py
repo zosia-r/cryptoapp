@@ -39,7 +39,7 @@ class LoginView(Screen):
         elif event.button.id == "back_btn":
             self.app.pop_screen()
 
-    
+
     def on_mount(self) -> None:
         self.query_one("#username").focus()
 
