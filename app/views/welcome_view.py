@@ -4,6 +4,7 @@ from textual.screen import Screen
 from textual.widgets import Header, Button, Label, Static
 from textual.containers import Vertical, Horizontal
 from app.views.login_view import LoginView
+from app.views.register_view import RegisterView
 
 ASCII_ART = r"""
   ____                  _          _                
@@ -18,7 +19,6 @@ class WelcomeView(Screen):
     CSS_PATH = "styles/styles.tcss"
 
     def compose(self) -> ComposeResult:
-        yield Header(show_clock=True)
         with Vertical():
             yield Static(ASCII_ART, id="title")
             yield Label("Manage your expenses. Securely.", id="subtitle")
@@ -33,7 +33,7 @@ class WelcomeView(Screen):
         if event.button.id == "login_btn":
             self.app.push_screen(LoginView())
         elif event.button.id == "register_btn":
-            self.app.push_screen("register")
+            self.app.push_screen(RegisterView())
 
 
     def on_mount(self) -> None:

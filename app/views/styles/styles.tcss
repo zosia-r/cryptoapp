@@ -36,6 +36,13 @@
     width: 100%;
 }
 
+#message {
+    color: #37e15a;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
 Input {
     width: 60;
     margin: 1 0;

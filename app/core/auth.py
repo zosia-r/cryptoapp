@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data"
 REGISTERED_USERS_PATH = DATA_PATH / "registered_users.json"
@@ -20,7 +21,7 @@ def register_user(username, password):
     
     for user in users:
         if user["username"] == username:
-            raise ValueError("Username is already taken.")
+            return False
         
     users.append({"username": username, "password": password})
 
@@ -39,6 +40,24 @@ def create_user_file(username, users_directory=USERS_DIRECTORY):
     if not user_file_path.exists():
         with open(user_file_path, "w") as file:
             json.dump({"data": []}, file, indent=4)
+
+
+def is_strong_password(password):
+    """
+    Minimum 8 characters, at least 1 uppercase, 1 lowercase, 1 number, 1 special character
+    """
+    if len(password) < 8:
+        return False
+    if not re.search(r"[A-Z]", password):
+        return False
+    if not re.search(r"[a-z]", password):
+        return False
+    if not re.search(r"[0-9]", password):
+        return False
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False
+    return True
+
 
 
 # AUTHENTICATE
