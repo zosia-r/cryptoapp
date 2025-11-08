@@ -19,7 +19,6 @@ class WelcomeView(Screen):
     CSS_PATH = "styles/styles.tcss"
 
     def compose(self) -> ComposeResult:
-        yield Header(show_clock=True)
         with Vertical():
             yield Static(ASCII_ART, id="title")
             yield Label("Manage your expenses. Securely.", id="subtitle")
