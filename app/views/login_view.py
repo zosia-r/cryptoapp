@@ -7,12 +7,6 @@ from app.views.dashboard_view import DashboardView
 from app.core.auth import authenticate_user
 
 
-# przykładowa funkcja sprawdzająca login i hasło
-def check_credentials(username: str, password: str) -> bool:
-    # tutaj implementacja Twojej funkcji weryfikującej dane
-    return username == "admin" and password == "1234"  # tylko przykład
-
-
 class LoginView(Screen):
     """Screen for user login"""
 
