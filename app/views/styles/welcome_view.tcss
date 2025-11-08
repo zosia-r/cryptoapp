@@ -1,0 +1,68 @@
+#title {
+    color: #37e15a;
+    text-align: center;
+    padding: 1 0;
+    text-style: bold;
+    width: 100%;
+}
+
+#subtitle {
+    color: #8075ff;
+    text-align: center;
+    padding: 0 0 1 0;
+    text-style: bold;
+    width: 100%;
+}
+
+#date {
+    color: #f8f0fb;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+#credits {
+    color: #f8f0fb;
+    text-align: center;
+    text-style: italic;
+    padding: 1 0 0 0;
+    width: 100%;
+}
+
+Button {
+    border: none;
+    padding: 1 4;
+    margin: 0 1;
+    text-style: bold;
+}
+
+Button#login_btn {
+    background: #37e15a;
+    color: #211a1d;
+}
+
+Button#register_btn {
+    background: #6320ee;
+    color: #f8f0fb;
+}
+
+Button {
+    width: 20;
+}
+
+#button_row {
+    layout: horizontal;
+    align: center middle;
+    padding: 1;
+}
+
+VerticalScroll {
+    align: center top;
+    padding: 2;
+}
+
+VerticalScroll>* {
+    align: center middle;
+    padding: 1 0;
+    width: 100%;
+}

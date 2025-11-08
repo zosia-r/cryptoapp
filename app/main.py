@@ -1,13 +1,23 @@
-from pathlib import Path
-from utils.registration import register_user
+from textual.app import App
+from app.views.welcome_view import WelcomeView
+from app.views.login_view import LoginView
+#from views.register_view import RegisterView
+#from views.dashboard_view import DashboardView
+
+
+class CryptoApp(App):
+    """Main Textual application"""
+
+    def on_mount(self):
+        # Register screens
+        self.install_screen(WelcomeView(), "welcome")
+        #self.install_screen(LoginView(), "login")
+        #self.install_screen(RegisterView(), "register")
+        #self.install_screen(DashboardView(), "dashboard")
+
+        # Show welcome first
+        self.push_screen("welcome")
+
 
 if __name__ == "__main__":
-    print("Welcome to the registration system.")
-    username = input("Please select your username: ")
-    password = input("Please select your password: ")
-    
-    try:
-        if register_user(username, password):
-            print("You were successfully added as a new user :)")
-    except ValueError as e:
-        print(e)
+    CryptoApp().run()
