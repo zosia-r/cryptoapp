@@ -1,0 +1,97 @@
+#title {
+    color: #37e15a;
+    text-align: center;
+    padding: 1 0;
+    text-style: bold;
+    width: 100%;
+}
+
+#subtitle {
+    color: #8075ff;
+    text-align: center;
+    padding: 0 0 1 0;
+    text-style: bold;
+    width: 100%;
+}
+
+#date {
+    color: #f8f0fb;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+#credits {
+    color: #f8f0fb;
+    text-align: center;
+    text-style: italic;
+    padding: 1 0 0 0;
+    width: 100%;
+}
+
+#error_message {
+    color: #d53333;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+#message {
+    color: #37e15a;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+Input {
+    width: 60;
+    margin: 1 0;
+    border: tall #8075ff;
+    background: #211a1d;
+    color: #f8f0fb;
+    text-align: center;
+}
+
+Button {
+    width: 20;
+    height: 3;
+    border: tall transparent;
+    padding: 0 4;
+    margin: 0 1;
+    text-style: bold;
+}
+
+Button:focus {
+    border: tall #f8f0fb;
+}
+
+Button#login_btn {
+    background: #37e15a;
+    color: #211a1d;
+}
+
+Button#register_btn {
+    background: #6320ee;
+    color: #f8f0fb;
+}
+
+Button#submit_btn {
+    background: #37e15a;
+    color: #211a1d;
+}
+
+Button#back_btn {
+    background: #6320ee;
+    color: #f8f0fb;
+}
+
+#button_row {
+    layout: horizontal;
+    align: center middle;
+    padding: 1;
+    width: 100%;
+}
+
+Vertical > * {
+    width: 100%;
+}

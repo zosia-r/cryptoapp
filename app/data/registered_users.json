@@ -7,6 +7,38 @@
         {
             "username": "bbb",
             "password": "aaaaa"
+        },
+        {
+            "username": "dupa",
+            "password": "Dupa12345!"
+        },
+        {
+            "username": "zosia",
+            "password": "Password1!"
+        },
+        {
+            "username": "borys",
+            "password": "Password2@"
+        },
+        {
+            "username": "basia",
+            "password": "Basia123#"
+        },
+        {
+            "username": "kasia",
+            "password": "Kasia123#"
+        },
+        {
+            "username": "jan",
+            "password": "Janek123#"
+        },
+        {
+            "username": "marek",
+            "password": "Marek123#"
+        },
+        {
+            "username": "b\u0142a\u017cej",
+            "password": "B\u0142a\u017cej123#"
         }
     ]
 }
