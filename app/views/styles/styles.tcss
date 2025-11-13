@@ -95,3 +95,87 @@ Button#back_btn {
 Vertical > * {
     width: 100%;
 }
+
+
+/* DASHBOARD VIEW STYLES */
+
+#main_contariner {
+    align: center middle;
+    padding: 2;
+    width: 100%;
+    height: 100%;
+    layout: vertical;
+}
+
+#dashboard_container {
+    align: center middle;
+    padding: 2;
+    width: 100%;
+}
+
+.dashboard_row {
+    layout: horizontal;
+    align: center middle;
+    padding: 1;
+}
+
+.dashboard_row > Button {
+    width: 24;
+    height: 3;
+    margin: 1;
+    border: none;
+    text-style: bold;
+    background: #6320ee;
+    color: #f8f0fb;
+}
+
+#top_bar {
+    layout: horizontal;
+    width: 100%;
+    height: 4;
+    align: left middle;
+    padding: 0 2;
+    background: #211a1d;
+}
+
+#welcome_text {
+    color: #37e15a;
+    text-align: left;
+    padding: 1 0;
+    text-style: bold;
+    width: 100%;
+}
+
+#logout_btn,
+#edit_profile_btn {
+    background: #6320ee;
+    color: #f8f0fb;
+    width: 20;
+    height: 3;
+    border: none;
+    dock: right;
+    text-style: bold;
+    margin-left: 1;
+}
+
+#dashboard_container {
+    align: center middle;
+    padding: 2;
+    width: 100%;
+}
+
+.dashboard_row {
+    layout: horizontal;
+    align: center middle;
+    padding: 1;
+}
+
+.dashboard_row > Button {
+    width: 24;
+    height: 3;
+    margin: 1;
+    border: none;
+    text-style: bold;
+    background: #6320ee;
+    color: #f8f0fb;
+}
