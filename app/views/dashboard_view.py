@@ -3,6 +3,9 @@ from textual.screen import Screen
 from textual.widgets import Button, Static
 from textual.containers import Vertical, Horizontal
 
+from app.views.income_view import IncomeView
+from app.views.expense_view import ExpenseView
+
 class DashboardView(Screen):
     CSS_PATH = ["styles/base.tcss", "styles/dashboard.tcss"]
 
@@ -30,9 +33,9 @@ class DashboardView(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         match event.button.id:
             case "add_expense_btn":
-                self.app.push_screen("add_expense")
+                self.app.push_screen(ExpenseView())
             case "add_income_btn":
-                self.app.push_screen("add_income")
+                self.app.push_screen(IncomeView())
             case "edit_profile_btn":
                 self.app.push_screen("edit_profile")
             case "report_btn":
