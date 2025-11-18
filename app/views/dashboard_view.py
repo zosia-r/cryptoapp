@@ -33,9 +33,9 @@ class DashboardView(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         match event.button.id:
             case "add_expense_btn":
-                self.app.push_screen(ExpenseView())
+                self.app.push_screen(ExpenseView(username=self.username))
             case "add_income_btn":
-                self.app.push_screen(IncomeView())
+                self.app.push_screen(IncomeView(username=self.username))
             case "edit_profile_btn":
                 self.app.push_screen("edit_profile")
             case "report_btn":

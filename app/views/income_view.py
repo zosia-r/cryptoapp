@@ -4,10 +4,15 @@ from textual.screen import Screen
 from textual.widgets import Button, Label, Input, Static, Select
 from textual.containers import Vertical, Horizontal
 
+from app.core.data_storage import add_income
 
 
 class IncomeView(Screen):
     CSS_PATH = ["styles/base.tcss"]
+
+    def __init__(self, username: str):
+        super().__init__()
+        self.username = username
 
     def compose(self) -> ComposeResult:
         with Vertical():
@@ -64,6 +69,7 @@ class IncomeView(Screen):
                 error.update("Invalid date format. Use YYYY-MM-DD.")
                 return
 
+            add_income(self.username, float(amount), category, date_str)
             msg.update("Income added successfully.")
 
             self.query_one("#amount", Input).value = ""
