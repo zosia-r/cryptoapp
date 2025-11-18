@@ -4,7 +4,7 @@ from textual.widgets import Button, Static
 from textual.containers import Vertical, Horizontal
 
 class DashboardView(Screen):
-    CSS_PATH = "styles/styles.tcss"
+    CSS_PATH = ["styles/base.tcss", "styles/dashboard.tcss"]
 
     def __init__(self, username: str):
         super().__init__()

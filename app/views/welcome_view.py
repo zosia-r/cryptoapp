@@ -16,7 +16,7 @@ ASCII_ART = r"""
 """
 
 class WelcomeView(Screen):
-    CSS_PATH = "styles/styles.tcss"
+    CSS_PATH = ["styles/base.tcss", "styles/welcome.tcss"]
 
     def compose(self) -> ComposeResult:
         with Vertical():

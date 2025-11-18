@@ -7,7 +7,7 @@ from app.core.auth import register_user, is_strong_password, is_valid_username
 from app.views.login_view import LoginView
 
 class RegisterView(Screen):
-    CSS_PATH = "styles/styles.tcss"
+    CSS_PATH = "styles/base.tcss"
 
     def compose(self) -> ComposeResult:
         with Vertical():
