@@ -1,20 +1,4 @@
 
-#title {
-    color: #37e15a;
-    text-align: center;
-    padding: 1 0;
-    text-style: bold;
-    width: 100%;
-}
-
-#subtitle {
-    color: #8075ff;
-    text-align: center;
-    padding: 0 0 1 0;
-    text-style: bold;
-    width: 100%;
-}
-
 #date {
     color: #f8f0fb;
     text-align: center;
