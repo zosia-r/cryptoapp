@@ -58,19 +58,30 @@ class ExpenseView(Screen):
             error.update("")
             msg.update("")
 
+            if not amount or not date_str or not category:
+                error.update("All fields are required.")
+                return
+            
+            # validate amount
             try:
-                float(amount)
+                amount = round(float(amount), 2)
             except ValueError:
-                error.update("Amount must be a valid number.")
+                error.update("Amount must be valid.")
+                self.query_one("#amount", Input).value = ""
+                self.query_one("#amount").focus()
                 return
 
+            # validate date
             try:
                 date.fromisoformat(date_str)
             except ValueError:
                 error.update("Invalid date format. Use YYYY-MM-DD.")
+                self.query_one("#date_input", Input).value = ""
+                self.query_one("#date_input").focus()
                 return
 
-            add_expense(self.username, float(amount), category, date_str)
+            add_expense(self.username, amount, category, date_str)
+            error.update("")
             msg.update("Expense added successfully.")
 
             self.query_one("#amount", Input).value = ""
