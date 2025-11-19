@@ -1,10 +1,6 @@
 import json
-from pathlib import Path
 import re
-
-DATA_PATH = Path(__file__).resolve().parent.parent / "data"
-REGISTERED_USERS_PATH = DATA_PATH / "registered_users.json"
-USERS_DIRECTORY = DATA_PATH / "users"
+from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY
 
 # REGISTER
 def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
@@ -38,9 +34,14 @@ def create_user_file(username, users_directory=USERS_DIRECTORY):
     user_file_path = users_directory / f"{username}.json"
     
     if not user_file_path.exists():
+        data = {
+            "data": {
+                "expenses": [],
+                "incomes": []
+            }
+        }
         with open(user_file_path, "w") as file:
-            json.dump({"data": []}, file, indent=4)
-
+            json.dump(data, file, indent=4)
 
 def is_strong_password(password):
     """

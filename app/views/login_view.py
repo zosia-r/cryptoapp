@@ -10,7 +10,7 @@ from app.core.auth import authenticate_user
 class LoginView(Screen):
     """Screen for user login"""
 
-    CSS_PATH = "styles/styles.tcss"
+    CSS_PATH = "styles/base.tcss"
 
     def compose(self) -> ComposeResult:
         with Vertical():

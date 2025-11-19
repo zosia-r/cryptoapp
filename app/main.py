@@ -1,8 +1,8 @@
 from textual.app import App
 from app.views.welcome_view import WelcomeView
 from app.views.login_view import LoginView
-#from views.register_view import RegisterView
-#from views.dashboard_view import DashboardView
+from app.views.register_view import RegisterView
+from app.views.dashboard_view import DashboardView
 
 
 class CryptoApp(App):
@@ -13,7 +13,7 @@ class CryptoApp(App):
         self.install_screen(WelcomeView(), "welcome")
         #self.install_screen(LoginView(), "login")
         #self.install_screen(RegisterView(), "register")
-        #self.install_screen(DashboardView(), "dashboard")
+        #self.install_screen(DashboardView("zosia"), "dashboard")
 
         # Show welcome first
         self.push_screen("welcome")

@@ -1,3 +1,7 @@
+#  Data
+app/data/registered_users.json
+app/data/users/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

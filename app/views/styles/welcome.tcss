@@ -1,0 +1,17 @@
+
+#date {
+    color: #f8f0fb;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+Button#login_btn {
+    background: #37e15a;
+    color: #211a1d;
+}
+
+Button#register_btn {
+    background: #6320ee;
+    color: #f8f0fb;
+}

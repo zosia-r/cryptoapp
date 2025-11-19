@@ -1,0 +1,60 @@
+#main_container {
+    align: center top;
+    padding: 2 0;
+}
+
+#top_bar {
+    width: 100%;
+    height: 5;
+    layout: horizontal;
+    align: center middle;
+    padding: 0 2;
+    border: tall #37e15a;
+}
+
+#welcome_text {
+    width: 1fr;
+    text-align: left;
+    padding: 0 2;
+    color: #f8f0fb;
+    text-style: bold;
+    padding-top: 1;
+}
+
+#logout_btn {
+    width: 18;
+    height: 3;
+    margin: 0 1;
+    background: #8075ff;
+    color: #f8f0fb;
+    border: tall transparent;
+    text-style: bold;
+    align: center middle;
+}
+
+#logout_btn:focus {
+    border: tall #f8f0fb;
+}
+
+#dashboard_container {
+    width: 100%;
+    align: center top;
+    padding: 2 0;
+}
+
+.dashboard_row {
+    width: 100%;
+    layout: horizontal;
+    align: center middle;
+    padding: 1 0;
+}
+
+.dashboard_button {
+    width: 24;
+    height: 3;
+    margin: 0 2;
+    background: #6320ee;
+    color: #f8f0fb;
+    border: tall transparent;
+    text-style: bold;
+}
