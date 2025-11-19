@@ -1,80 +1,60 @@
-#main_contariner {
-    align: center middle;
-    padding: 2;
-    width: 100%;
-    height: 100%;
-    layout: vertical;
-}
-
-#dashboard_container {
-    align: center middle;
-    padding: 2;
-    width: 100%;
-}
-
-.dashboard_row {
-    layout: horizontal;
-    align: center middle;
-    padding: 1;
-}
-
-.dashboard_row > Button {
-    width: 24;
-    height: 3;
-    margin: 1;
-    border: none;
-    text-style: bold;
-    background: #6320ee;
-    color: #f8f0fb;
+#main_container {
+    align: center top;
+    padding: 2 0;
 }
 
 #top_bar {
-    layout: horizontal;
     width: 100%;
-    height: 4;
-    align: left middle;
+    height: 5;
+    layout: horizontal;
+    align: center middle;
     padding: 0 2;
-    background: #211a1d;
+    border: tall #37e15a;
 }
 
 #welcome_text {
-    color: #37e15a;
+    width: 1fr;
     text-align: left;
-    padding: 1 0;
+    padding: 0 2;
+    color: #f8f0fb;
     text-style: bold;
-    width: 100%;
+    padding-top: 1;
 }
 
-#logout_btn,
-#edit_profile_btn {
-    background: #6320ee;
-    color: #f8f0fb;
-    width: 20;
+#logout_btn {
+    width: 18;
     height: 3;
-    border: none;
-    dock: right;
+    margin: 0 1;
+    background: #8075ff;
+    color: #f8f0fb;
+    border: tall transparent;
     text-style: bold;
-    margin-left: 1;
+    align: center middle;
+}
+
+#logout_btn:focus {
+    border: tall #f8f0fb;
 }
 
 #dashboard_container {
-    align: center middle;
-    padding: 2;
     width: 100%;
+    align: center top;
+    padding: 2 0;
 }
 
 .dashboard_row {
+    width: 100%;
     layout: horizontal;
     align: center middle;
-    padding: 1;
+    padding: 1 0;
 }
 
-.dashboard_row > Button {
+.dashboard_button {
     width: 24;
     height: 3;
-    margin: 1;
-    border: none;
-    text-style: bold;
+    margin: 0 2;
     background: #6320ee;
     color: #f8f0fb;
+    border: tall transparent;
+    text-style: bold;
 }

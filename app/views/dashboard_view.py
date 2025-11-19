@@ -17,7 +17,6 @@ class DashboardView(Screen):
         with Vertical(id="main_container"):
             with Horizontal(id="top_bar"):
                 yield Static(f"Hello, {self.username}", id="welcome_text")
-                yield Button("Edit Profile", id="edit_profile_btn")
                 yield Button("Logout", id="logout_btn")
 
             with Vertical(id="dashboard_container"):
@@ -30,14 +29,15 @@ class DashboardView(Screen):
 
                 yield Static("Cryptography 2025 – Zofia Różańska & Selina Zundel", id="credits")
 
+    def on_mount(self):
+        self.query_one("#add_expense_btn").focus()
+
     def on_button_pressed(self, event: Button.Pressed) -> None:
         match event.button.id:
             case "add_expense_btn":
                 self.app.push_screen(ExpenseView(username=self.username))
             case "add_income_btn":
                 self.app.push_screen(IncomeView(username=self.username))
-            case "edit_profile_btn":
-                self.app.push_screen("edit_profile")
             case "report_btn":
                 self.app.push_screen("report")
             case "check_report_btn":
