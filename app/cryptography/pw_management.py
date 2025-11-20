@@ -4,12 +4,9 @@ from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 
 length = 32
 #TODO somewhere convert string to bytes
+     
 
-def registration_derivition(password:str):
-     salt = os.urandom(16)
-     derive_key(password, salt)
-
-
+# TODO add default parameters is param input for n, r, p
 def derive_key(password: str, salt: bytes) -> bytes:
 
     n=2**14,
@@ -24,8 +21,7 @@ def derive_key(password: str, salt: bytes) -> bytes:
         p=p,
         )
 
-    # password has to be bytes here
-    key = kdf.derive(password)
+    key = kdf.derive(password.encode('utf-8'))
 
     salt_b64_bytes = base64.b64encode(salt)
     salt_b64_string = salt_b64_bytes.decode('utf-8')
@@ -35,9 +31,16 @@ def derive_key(password: str, salt: bytes) -> bytes:
     scrypt_configuration = f"§scrypt$ln={n},r={r},p={p}${salt_b64_string}${key_b64_string}"
     return scrypt_configuration
 
-
+# TODO derive configuration parameters of string
 def get_scrypt_configuration(scrypt_config: str):
     pass
+
+def create_password_data(password: str):
+    salt = os.urandom(16)
+    scrypt_config = derive_key(password, salt)
+    encryption_salt = os.urandom(16)
+    return salt, scrypt_config, encryption_salt
+
 
 # not sure if key input is tring or bytes
 def verify_key(password: str, key: str, scrypt_config:str):
