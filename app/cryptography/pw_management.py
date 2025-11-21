@@ -55,22 +55,28 @@ def create_password_data(password: str):
     encryption_salt = os.urandom(16)
     return salt, scrypt_config, encryption_salt
 
+def verify_password(password):
+    # TODO get scrypt config data from json of user
+    # TODO delte the following part after I got the user data from json
+    n = n
+    r = r
+    p = p
+    key = key
+
 
 # not sure if key input is tring or bytes
-def verify_key(password: str, key: str, scrypt_config:str):
-    # salt, n, r, and p are derived from scrypt config
-    #TODO: what ablut length?
+def verify_key(password: str, key: str, n, r, p, salt: str):
     
+    salt_b64_bytes = base64.b64encode(salt)
+
     kdf = Scrypt(
-        salt=salt,
+        salt=salt_b64_bytes,
         length=length,
-        n=2**14,
-        r=8,
-        p=1,
+        n=n,
+        r=r,
+        p=p,
     )
 
-    #password probably also has additional information
-    # TODO filter only to pw that has to be checked
-
     pw_b64_bytes = base64.b64encode(password)
+    key_b64_bytes = base64.b64encode(key)
     kdf.verify(pw_b64_bytes, key)
