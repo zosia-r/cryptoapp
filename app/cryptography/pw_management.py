@@ -3,15 +3,15 @@ import base64
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 
 length = 32
-#TODO somewhere convert string to bytes
+
+# Scrypt parameters for the derivition of the encryption key
+n_ekay = 2**14
+n_r = 8
+n_p = 1
      
 
-# TODO add default parameters is param input for n, r, p
-def derive_key(password: str, salt: bytes) -> bytes:
-
-    n=2**14,
-    r=8,
-    p=1,
+# Derives the key using Scrypt given parameters
+def derive_key(password: str, salt: bytes, n, r, p) -> bytes:
 
     kdf = Scrypt(
         salt=salt,
@@ -31,10 +31,24 @@ def derive_key(password: str, salt: bytes) -> bytes:
     scrypt_configuration = f"§scrypt$ln={n},r={r},p={p}${salt_b64_string}${key_b64_string}"
     return scrypt_configuration
 
-# TODO derive configuration parameters of string
-def get_scrypt_configuration(scrypt_config: str):
-    pass
+# Parses the cofing string to get necessary parameters
+def parse_scrypt_configuration(scrypt_config: str):
+    parameters = scrypt_config.split('$')
+    scrypt_params = parameters[2]
+    scrypt_params_list = scrypt_params.split(',')
+    scrypt_config = {}
+    for item in scrypt_params_list:
+        if '=' in item:
+            key, value = item.split('=')
+            scrypt_config[key] = value
 
+    salt_string = parameters[3]
+    key_string = parameters[4]
+
+    return scrypt_config, salt_string, key_string
+
+
+# creates the passwort data that must be stored in json
 def create_password_data(password: str):
     salt = os.urandom(16)
     scrypt_config = derive_key(password, salt)
@@ -57,5 +71,6 @@ def verify_key(password: str, key: str, scrypt_config:str):
 
     #password probably also has additional information
     # TODO filter only to pw that has to be checked
-    # password has to be bytes
-    kdf.verify(password, key)
+
+    pw_b64_bytes = base64.b64encode(password)
+    kdf.verify(pw_b64_bytes, key)
