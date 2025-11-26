@@ -1,6 +1,7 @@
 import json
 import re
 from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY
+from app.cryptography import pw_management as pw
 
 # REGISTER
 def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
@@ -18,8 +19,11 @@ def register_user(username, password):
     for user in users:
         if user["username"] == username:
             return False
-        
-    users.append({"username": username, "password": password})
+    
+    password_data, encryption_salt = pw.create_password_data(password)
+    # TODO change "password" to "key" -> change name of field
+    users.append({"username": username, "password": 
+                  {"password_data": password_data, "encryption_salt": encryption_salt}})
 
     save_registered_users({"users": users})
     create_user_file(username)
@@ -76,7 +80,9 @@ def authenticate_user(username, password):
     users = load_registered_users()["users"]
     
     for user in users:
-        if user["username"] == username and user["password"] == password:
+        if user["username"] == username:
+            scrypt_config = user["password"]["password_data"]
+            pw.verify_password(password, scrypt_config)
             print("Successfully authenticated!")
             return True
     
