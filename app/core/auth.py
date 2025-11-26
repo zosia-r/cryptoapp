@@ -80,7 +80,9 @@ def authenticate_user(username, password):
     users = load_registered_users()["users"]
     
     for user in users:
-        if user["username"] == username and user["password"] == password:
+        if user["username"] == username:
+            scrypt_config = user["password"]["password_data"]
+            pw.verify_password(password, scrypt_config)
             print("Successfully authenticated!")
             return True
     
