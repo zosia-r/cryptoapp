@@ -1,6 +1,5 @@
 #  Data
-app/data/registered_users.json
-app/data/users/*.json
+app/data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
