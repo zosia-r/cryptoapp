@@ -1,8 +1,6 @@
 from __future__ import annotations
 from pathlib import Path
 from datetime import datetime
-from pydoc import doc
-from turtle import width
 from typing import Dict, List, Any
 from io import BytesIO
 import calendar
@@ -15,7 +13,7 @@ from reportlab.platypus import (
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER
 
 from app.core import REPORTS_DIRECTORY
 from app.core.data_storage import load_user_data
@@ -339,12 +337,11 @@ class ReportGenerator:
         story.append(Spacer(1, 8))
 
         top_rows = [
-            ["Amount", "Category", "Date", "Timestamp"]
+            ["Amount", "Category", "Date"]
         ] + [
             [
                 f"{float(e.get('amount',0)):.2f} €",
                 e.get("category",""),
-                e.get("date",""),
                 self._parse_date(e.get("date","")).strftime("%d %b %Y"),
             ] for e in data["top_expenses"]
         ]
