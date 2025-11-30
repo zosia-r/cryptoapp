@@ -10,7 +10,6 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Image,
     Table, TableStyle, PageBreak
 )
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
@@ -102,6 +101,7 @@ class ReportGenerator:
             ("FONTNAME", (0, 0), (-1, 0), self.FONT_BOLD),
             ("FONTNAME", (0, 0), (0, -1), self.FONT_BOLD),
             ("FONTSIZE", (0, 0), (-1, -1), 12),
+            ("TEXTCOLOR", (0, 0), (-1, 0), self.BEIGE),
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
             ("LEFTPADDING", (0,0), (-1,-1), 6),
             ("RIGHTPADDING", (0,0), (-1,-1), 6),
