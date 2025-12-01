@@ -18,6 +18,19 @@ from app.core import REPORTS_DIRECTORY
 from app.core.data_storage import load_user_data
 
 
+def get_years_for_user(username: str) -> dict[int, int]:
+        data = load_user_data(username)["data"]
+        expenses = data.get("expenses", [])
+        incomes = data.get("incomes", [])
+
+        years = {}
+
+        for item in expenses + incomes:
+            year = int(item["date"][:4])
+            years[year] = years.get(year, 0) + 1
+
+        return dict(sorted(years.items(), reverse=True))
+
 
 class ReportGenerator:
     GREEN = "#37E15A"
@@ -371,16 +384,3 @@ class ReportGenerator:
         # Build PDF
         doc.build(story, onFirstPage=add_footer, onLaterPages=add_footer)
         return self.PDF_PATH
-
-
-# simple CLI convenience
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("username")
-    parser.add_argument("year", type=int)
-    args = parser.parse_args()
-    report = ReportGenerator(args.username, args.year)
-    path = report.generate_pdf()
-
-    print("Report saved to", path)
