@@ -23,11 +23,11 @@ class ReportSelectorView(Screen):
         self.selected_year = None
 
     def compose(self):
-        with Vertical(id="dialog"):
+        with Vertical(id="main-container"):
             yield Label("Select year to generate report:", id="title")
             yield RadioSet(
                 *[
-                    RadioButton(f"{year}: {count} records", id=f"year_{year}")
+                    RadioButton(f"{year}: {count} {'record' if count == 1 else 'records'}", id=f"year_{year}")
                     for year, count in self.years_info.items()
                 ],
                 id="year_selector"
