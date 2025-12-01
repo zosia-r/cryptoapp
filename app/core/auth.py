@@ -1,6 +1,6 @@
 import json
 import re
-from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY
+from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY, REPORTS_DIRECTORY
 from app.cryptography import pw_management as pw
 
 # REGISTER
@@ -27,6 +27,7 @@ def register_user(username, password):
 
     save_registered_users({"users": users})
     create_user_file(username)
+    create_user_report_directory(username)
     print(f"Registered users: {users}")
     return True
 
@@ -46,6 +47,10 @@ def create_user_file(username, users_directory=USERS_DIRECTORY):
         }
         with open(user_file_path, "w") as file:
             json.dump(data, file, indent=4)
+
+def create_user_report_directory(username, reports_directory=REPORTS_DIRECTORY):
+    user_report_dir = reports_directory / username
+    user_report_dir.mkdir(parents=True, exist_ok=True)
 
 def is_strong_password(password):
     """

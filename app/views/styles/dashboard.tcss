@@ -58,3 +58,25 @@
     border: tall transparent;
     text-style: bold;
 }
+
+
+/* Year selector */
+#year_selector {
+    margin: 1 0;
+}
+
+#year_selector:focus {
+    border: tall #f8f0fb;
+}
+
+#year_selector RadioButton {
+    background: #6320ee;
+    color: #f8f0fb;
+    border: tall transparent;
+    padding: 0 2;
+    border: tall transparent;
+}
+
+#year_selector RadioButton:focus {
+    border: tall #37e15a;
+}

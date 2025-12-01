@@ -5,6 +5,7 @@ from textual.containers import Vertical, Horizontal
 
 from app.views.income_view import IncomeView
 from app.views.expense_view import ExpenseView
+from app.views.report_selector_view import ReportSelectorView
 
 class DashboardView(Screen):
     CSS_PATH = ["styles/base.tcss", "styles/dashboard.tcss"]
@@ -39,8 +40,8 @@ class DashboardView(Screen):
             case "add_income_btn":
                 self.app.push_screen(IncomeView(username=self.username))
             case "report_btn":
-                self.app.push_screen("report")
+                self.app.push_screen(ReportSelectorView(username=self.username))
             case "check_report_btn":
-                self.app.push_screen("check_report")
+                pass #TODO: implement check report functionality
             case "logout_btn":
                 self.app.pop_screen()
