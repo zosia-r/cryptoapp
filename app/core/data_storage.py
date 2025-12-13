@@ -12,7 +12,6 @@ def load_user_data(username: str) -> dict:
     with open(user_file, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
 def save_user_data(username: str, data: dict) -> None:
     user_directory = USERS_DIRECTORY / username
     user_directory.mkdir(parents=True, exist_ok=True)
@@ -21,6 +20,16 @@ def save_user_data(username: str, data: dict) -> None:
     with open(user_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
+
+def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
+    try:
+        with open(registered_users_path, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {"users": []}
+    except json.JSONDecodeError:
+        return {"users": []}
+    
 def save_registered_users(data, registered_users_path=REGISTERED_USERS_PATH):
     with open(registered_users_path, "w") as file:
         json.dump(data, file, indent=4)

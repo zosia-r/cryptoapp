@@ -1,19 +1,8 @@
-import json
 import re
-from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY
 from app.cryptography import pw_management as pw
-from app.core.data_storage import save_registered_users, create_user_file, create_user_report_directory
+from app.core.data_storage import save_registered_users, load_registered_users, create_user_file, create_user_report_directory
 
 # REGISTER
-def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
-    try:
-        with open(registered_users_path, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return {"users": []}
-    except json.JSONDecodeError:
-        return {"users": []}
-    
 def register_user(username, password):
     users = load_registered_users()["users"]
     
