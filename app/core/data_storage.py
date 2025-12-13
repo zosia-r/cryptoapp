@@ -103,3 +103,17 @@ def get_reports_dir(username: str) -> str:
     user_report_dir = USERS_DIRECTORY / username / "reports"
     user_report_dir.mkdir(parents=True, exist_ok=True)
     return user_report_dir
+
+# KEY STORAGE
+def save_user_keys(username: str, private_key_pem: bytes, public_key_pem: bytes) -> None:
+    user_directory = USERS_DIRECTORY / username
+    user_directory.mkdir(parents=True, exist_ok=True)
+
+    private_key_path = user_directory / "private_key.pem"
+    public_key_path = user_directory / "public_key.pem"
+
+    with open(private_key_path, "wb") as f:
+        f.write(private_key_pem)
+
+    with open(public_key_path, "wb") as f:
+        f.write(public_key_pem)

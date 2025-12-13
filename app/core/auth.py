@@ -1,6 +1,10 @@
 import re
 from app.cryptography import pw_management as pw
-from app.core.data_storage import save_registered_users, load_registered_users, create_user_file, create_user_report_directory
+from app.core.data_storage import ( save_registered_users, load_registered_users, 
+                                   create_user_file, create_user_report_directory, 
+                                   save_user_keys
+                                    )
+from app.cryptography import rsa as rsa
 
 # REGISTER
 def register_user(username, password):
@@ -14,6 +18,9 @@ def register_user(username, password):
     # TODO change "password" to "key" -> change name of field
     users.append({"username": username, "password": 
                   {"password_data": password_data, "encryption_salt": encryption_salt}})
+
+    private_key_pem, public_key_pem = rsa.get_rsa_key_pair_pem(password.encode())
+    save_user_keys(username, private_key_pem, public_key_pem)
 
     save_registered_users({"users": users})
     create_user_file(username)
