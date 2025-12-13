@@ -16,10 +16,11 @@ class ReportSelectorView(Screen):
             super().__init__()
             self.pdf_path = pdf_path
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, encryption_key: bytes):
         super().__init__()
         self.username = username
-        self.years_info = get_years_for_user(self.username)
+        self.encryption_key = encryption_key
+        self.years_info = get_years_for_user(self.username, self.encryption_key)
         self.selected_year = None
 
     def compose(self):
