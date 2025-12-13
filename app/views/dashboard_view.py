@@ -39,9 +39,9 @@ class DashboardView(Screen):
             case "add_expense_btn":
                 self.app.push_screen(ExpenseView(username=self.username, encryption_key=self.encryption_key))
             case "add_income_btn":
-                self.app.push_screen(IncomeView(username=self.username))
+                self.app.push_screen(IncomeView(username=self.username, encryption_key=self.encryption_key))
             case "report_btn":
-                self.app.push_screen(ReportSelectorView(username=self.username))
+                self.app.push_screen(ReportSelectorView(username=self.username), encryption_key=self.encryption_key)
             case "check_report_btn":
                 pass #TODO: implement check report functionality
             case "logout_btn":
