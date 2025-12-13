@@ -9,9 +9,10 @@ from app.core.data_storage import add_expense
 class ExpenseView(Screen):
     CSS_PATH = ["styles/base.tcss"]
     
-    def __init__(self, username: str):
+    def __init__(self, username: str, encryption_key: bytes):
         super().__init__()
         self.username = username
+        self.encryption_key = encryption_key
 
     def compose(self) -> ComposeResult:
         with Vertical():
