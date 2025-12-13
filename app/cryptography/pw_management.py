@@ -74,12 +74,7 @@ def verify_password(password, scrypt_config):
     key = parameters[4]
     salt = base64.b64decode(salt)
     key = base64.b64decode(key)
-    verify_key(password, key, n, r, p, salt)
-    
 
-
-def verify_key(password: str, key: bytes, n, r, p, salt: bytes):
-    
     kdf = Scrypt(
         salt=salt,
         length=length,
@@ -88,5 +83,20 @@ def verify_key(password: str, key: bytes, n, r, p, salt: bytes):
         p=p,
     )
 
+    verify_key(password, key, kdf)
+
+    return derive_encryption_key(password, kdf)
+    
+
+
+def verify_key(password: str, key: bytes, kdf: Scrypt):
+
     pw_bytes = password.encode("utf-8")
     kdf.verify(pw_bytes, key)
+
+
+def derive_encryption_key(password, kdf: Scrypt):
+
+    encryption_key = kdf.derive(password.encode('utf-8'))
+    return encryption_key
+
