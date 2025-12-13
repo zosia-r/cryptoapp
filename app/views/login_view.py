@@ -28,8 +28,9 @@ class LoginView(Screen):
         if event.button.id == "submit_btn":
             username = self.query_one("#username", Input).value
             password = self.query_one("#password", Input).value
-            if authenticate_user(username, password):
-                self.app.push_screen(DashboardView(username))
+            encryption_key = authenticate_user(username, password)
+            if encryption_key != None:
+                self.app.push_screen(DashboardView(username, encryption_key))
             else:
                 message = self.query_one("#error_message", Static)
                 message.update("Incorrect username or password. Try again.")

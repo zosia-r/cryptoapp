@@ -10,9 +10,10 @@ from app.views.report_selector_view import ReportSelectorView
 class DashboardView(Screen):
     CSS_PATH = ["styles/base.tcss", "styles/dashboard.tcss"]
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, encryption_key: bytes):
         super().__init__()
         self.username = username
+        self.encryption_key = encryption_key
 
     def compose(self) -> ComposeResult:
         with Vertical(id="main_container"):
@@ -36,11 +37,11 @@ class DashboardView(Screen):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         match event.button.id:
             case "add_expense_btn":
-                self.app.push_screen(ExpenseView(username=self.username))
+                self.app.push_screen(ExpenseView(username=self.username, encryption_key=self.encryption_key))
             case "add_income_btn":
-                self.app.push_screen(IncomeView(username=self.username))
+                self.app.push_screen(IncomeView(username=self.username, encryption_key=self.encryption_key))
             case "report_btn":
-                self.app.push_screen(ReportSelectorView(username=self.username))
+                self.app.push_screen(ReportSelectorView(username=self.username, encryption_key=self.encryption_key))
             case "check_report_btn":
                 pass #TODO: implement check report functionality
             case "logout_btn":

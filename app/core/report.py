@@ -17,17 +17,40 @@ from reportlab.lib.enums import TA_CENTER
 from app.core import REPORTS_DIRECTORY
 from app.core.data_storage import load_user_data
 
+from app.cryptography import auth_encry
 
-def get_years_for_user(username: str) -> dict[int, int]:
+
+def decrypt_item_fields(item: dict, key: bytes, aad: bytes) -> dict:
+    # item values are base64 strings -> decrypt -> bytes -> decode to text
+    out = {}
+    for k, v in item.items():
+        out[k] = auth_encry.decrypt_data(key, v, aad).decode("utf-8")
+    return out
+
+
+def get_years_for_user(username: str, encryption_key: bytes) -> dict[int, int]:
         data = load_user_data(username)["data"]
         expenses = data.get("expenses", [])
         incomes = data.get("incomes", [])
 
+        #  auth_encry.decrypt_data(encryption_key, data.get("expenses", []), (username + "expense").encode('utf-8'))
+        # auth_encry.decrypt_data(encryption_key, data.get("incomes", []), (username + "incomes").encode('utf-8')) 
+
         years = {}
 
-        for item in expenses + incomes:
-            year = int(item["date"][:4])
+        expense_aad = (username + "expense").encode("utf-8")
+        income_aad  = (username + "income").encode("utf-8")
+
+        for item in expenses:
+            dec = decrypt_item_fields(item, encryption_key, expense_aad)
+            year = int(dec["date"][:4])
             years[year] = years.get(year, 0) + 1
+
+        for item in incomes:
+            dec = decrypt_item_fields(item, encryption_key, income_aad)
+            year = int(dec["date"][:4])
+            years[year] = years.get(year, 0) + 1
+
 
         return dict(sorted(years.items(), reverse=True))
 

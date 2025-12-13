@@ -15,7 +15,7 @@ def derive_key(password: str, salt: bytes, n= n_ekay, r = n_r, p = n_p) -> bytes
 
     kdf = Scrypt(
         salt=salt,
-        length=length,
+        length=32,
         n=n,
         r=r,
         p=p,
@@ -59,7 +59,7 @@ def create_password_data(password: str):
     encryption_salt_string = base64.b64encode(encryption_salt).decode('utf-8')
     return scrypt_config, encryption_salt_string
 
-def verify_password(password, scrypt_config):
+def verify_password(password, scrypt_config, encryption_salt):
     # Structure of the s_c: $scrypt$ln={n},r={r},p={p}${salt_b64_string}${key_b64_string}
     parameters = scrypt_config.split('$')
     for item in parameters[2].split(","):
@@ -74,19 +74,53 @@ def verify_password(password, scrypt_config):
     key = parameters[4]
     salt = base64.b64decode(salt)
     key = base64.b64decode(key)
-    verify_key(password, key, n, r, p, salt)
-    
 
-
-def verify_key(password: str, key: bytes, n, r, p, salt: bytes):
-    
     kdf = Scrypt(
         salt=salt,
-        length=length,
+        length=32,
         n=n,
         r=r,
         p=p,
     )
 
+    verify_key(password, key, kdf)
+
+
+    encryption_key = derive_encryption_key(password, encryption_salt)
+    print(encryption_key)
+    return encryption_key
+    
+
+
+def verify_key(password: str, key: bytes, kdf):
+
+
     pw_bytes = password.encode("utf-8")
     kdf.verify(pw_bytes, key)
+
+
+def derive_encryption_key(password, encryption_salt):
+
+    if isinstance(encryption_salt, str):
+        encryption_salt = base64.b64decode(encryption_salt)
+    elif isinstance(encryption_salt, (bytes, bytearray)):
+        encryption_salt = bytes(encryption_salt)
+    else:
+        raise TypeError(f"encryption_salt must be base64 str or bytes, got {type(encryption_salt)}")
+
+    kdf = Scrypt(
+        salt=encryption_salt,
+        length=32,
+        n=n_ekay,
+        r=n_r,
+        p=n_p,
+    )
+
+    
+    encryption_key = kdf.derive(password.encode('utf-8'))
+
+    if len(encryption_key) != 32:
+        raise ValueError(f"Derived key must be 32 bytes, got {len(key)}")
+
+    return encryption_key
+
