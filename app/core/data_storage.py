@@ -3,7 +3,7 @@ from datetime import datetime
 from app.core import USERS_DIRECTORY, REGISTERED_USERS_PATH
 from app.cryptography import auth_encry
 
-
+# USER DATA STORAGE
 def load_user_data(username: str) -> dict:
     user_directory = USERS_DIRECTORY / username
     user_directory.mkdir(parents=True, exist_ok=True)
@@ -20,7 +20,7 @@ def save_user_data(username: str, data: dict) -> None:
     with open(user_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-
+# REGISTERED USERS STORAGE
 def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
     try:
         with open(registered_users_path, "r") as file:
@@ -34,6 +34,7 @@ def save_registered_users(data, registered_users_path=REGISTERED_USERS_PATH):
     with open(registered_users_path, "w") as file:
         json.dump(data, file, indent=4)
 
+# USER SETUP
 def create_user_file(username, users_directory=USERS_DIRECTORY):
     user_directory = users_directory / username
     user_directory.mkdir(parents=True, exist_ok=True)
@@ -53,6 +54,7 @@ def create_user_report_directory(username, users_directory=USERS_DIRECTORY):
     user_report_dir = users_directory / username / "reports"
     user_report_dir.mkdir(parents=True, exist_ok=True)
 
+# USER DATA MANAGEMENT
 def add_income(username: str, encryption_key, amount: float, category: str, date_str: str) -> None:
     type = "income"
     data = load_user_data(username)["data"]
@@ -95,3 +97,9 @@ def add_expense(username: str, encryption_key, amount: float, category: str, dat
     })
 
     save_user_data(username, {"data": data})
+
+# REPORT STORAGE
+def get_reports_dir(username: str) -> str:
+    user_report_dir = USERS_DIRECTORY / username / "reports"
+    user_report_dir.mkdir(parents=True, exist_ok=True)
+    return user_report_dir

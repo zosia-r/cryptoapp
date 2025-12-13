@@ -15,7 +15,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 
 from app.core import USERS_DIRECTORY
-from app.core.data_storage import load_user_data
+from app.core.data_storage import load_user_data, get_reports_dir
 
 from app.cryptography import auth_encry
 
@@ -76,8 +76,7 @@ class ReportGenerator:
         self.encryption_key = encryption_key
         self.styles = self._prepare_styles()
 
-        self.USER_REPORT_DIRECTORY = USERS_DIRECTORY / self.username / "reports"
-        self.USER_REPORT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        self.USER_REPORT_DIRECTORY = get_reports_dir(self.username)
         self.PDF_PATH = self.USER_REPORT_DIRECTORY / f"report_year_{self.year}.pdf"
 
     # ====================== STYLES PREPARATION ======================
