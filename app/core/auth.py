@@ -83,12 +83,12 @@ def is_valid_username(username):
 def authenticate_user(username, password):
 
     users = load_registered_users()["users"]
-    
+
     for user in users:
         if user["username"] == username:
             scrypt_config = user["password"]["password_data"]
-            pw.verify_password(password, scrypt_config)
+            encryption_key = pw.verify_password(password, scrypt_config)
             print("Successfully authenticated!")
-            return True
+            return encryption_key
     
-    return False
+    return None
