@@ -59,7 +59,7 @@ class ReportSelectorView(Screen):
 
     async def generate_report_async(self):
         try:
-            generator = ReportGenerator(self.username, self.selected_year)
+            generator = ReportGenerator(self.username, self.selected_year, self.encryption_key)
             pdf_path = await asyncio.to_thread(generator.generate_pdf)
         
             message_widget = self.query_one("#message", Static)

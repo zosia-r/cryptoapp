@@ -70,9 +70,10 @@ class ReportGenerator:
     
 
 
-    def __init__(self, username: str, year: int):
+    def __init__(self, username: str, year: int, encryption_key: bytes):
         self.username = username
         self.year = year
+        self.encryption_key = encryption_key
         self.styles = self._prepare_styles()
 
         self.USER_REPORT_DIRECTORY = REPORTS_DIRECTORY / self.username
@@ -142,6 +143,14 @@ class ReportGenerator:
             ("LEFTPADDING", (0,0), (-1,-1), 6),
             ("RIGHTPADDING", (0,0), (-1,-1), 6),
         ])
+    # ====================== DECRYPTION ======================
+    def _decrypt_entries(self, entries: list[dict], aad: bytes) -> list[dict]:
+        decrypted = []
+        for item in entries:
+            decrypted.append(
+                decrypt_item_fields(item, self.encryption_key, aad)
+            )
+        return decrypted
 
     # ====================== DATA HELPERS ======================
     def _parse_date(self, entry_date: str) -> datetime:
@@ -232,8 +241,15 @@ class ReportGenerator:
     # ====================== BUILD REPORT STRUCTURE ======================
     def _build_structure(self):
         raw = load_user_data(self.username)["data"]
-        expenses = self._filter_year(raw["expenses"])
-        incomes = self._filter_year(raw["incomes"])
+
+        expense_aad = (self.username + "expense").encode("utf-8")
+        income_aad  = (self.username + "income").encode("utf-8")
+
+        expenses_dec = self._decrypt_entries(raw["expenses"], expense_aad)
+        incomes_dec  = self._decrypt_entries(raw["incomes"], income_aad)
+
+        expenses = self._filter_year(expenses_dec)
+        incomes  = self._filter_year(incomes_dec)
 
         total_income = self._sum_total(incomes)
         total_expense = self._sum_total(expenses)
