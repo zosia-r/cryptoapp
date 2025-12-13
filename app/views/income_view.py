@@ -10,9 +10,10 @@ from app.core.data_storage import add_income
 class IncomeView(Screen):
     CSS_PATH = ["styles/base.tcss"]
 
-    def __init__(self, username: str):
+    def __init__(self, username: str, encryption_key: bytes):
         super().__init__()
         self.username = username
+        self.encryption_key = encryption_key
 
     def compose(self) -> ComposeResult:
         with Vertical():
@@ -79,7 +80,7 @@ class IncomeView(Screen):
                 self.query_one("#date_input").focus()
                 return
 
-            add_income(self.username, amount, category, date_str)
+            add_income(self.username, self.encryption_key, amount, category, date_str)
             error.update("")
             msg.update("Income added successfully.")
 

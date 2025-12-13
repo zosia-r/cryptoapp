@@ -87,7 +87,8 @@ def authenticate_user(username, password):
     for user in users:
         if user["username"] == username:
             scrypt_config = user["password"]["password_data"]
-            encryption_key = pw.verify_password(password, scrypt_config)
+            encryption_salt = user["password"]["encryption_salt"]
+            encryption_key = pw.verify_password(password, scrypt_config, encryption_salt)
             print("Successfully authenticated!")
             return encryption_key
     

@@ -81,7 +81,7 @@ class ExpenseView(Screen):
                 self.query_one("#date_input").focus()
                 return
 
-            add_expense(self.username, amount, category, date_str)
+            add_expense(self.username, self.encryption_key, amount, category, date_str)
             error.update("")
             msg.update("Expense added successfully.")
 
