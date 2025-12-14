@@ -1,9 +1,11 @@
 from textual.screen import Screen
 from textual.widgets import Button, Input, Label, Static, RadioSet, RadioButton
 from textual.containers import Vertical, Horizontal
+import asyncio
 
 from app.cryptography.rsa import sign_pdf
 from app.core.report_storage import get_unsigned_reports
+
 
 class SignView(Screen):
 
@@ -49,8 +51,8 @@ class SignView(Screen):
 
         elif event.button.id == "submit_btn":
             if self.selected_year is None:
-                    self.query_one("#error_message", Static).update("Please select a year!")
-                    return
+                self.query_one("#error_message", Static).update("Please select a year!")
+                return
             
             self.password = self.query_one("#password").value
             if not self.password:
@@ -58,18 +60,29 @@ class SignView(Screen):
                 return
             
             self.query_one("#error_message").update("")
+            self.query_one("#message").update("Signing report...")
 
-            try:
-                reports_by_year = {
-                    r["year"]: r for r in get_unsigned_reports(self.username)
-                }
-                pdf_path = reports_by_year[self.selected_year]["path"]
+            asyncio.create_task(self.sign_report_async())
 
-                signature_path = sign_pdf(self.username, pdf_path, self.password)
+    async def sign_report_async(self):
+        try:
+            reports_by_year = {
+                r["year"]: r for r in get_unsigned_reports(self.username)
+            }
+            pdf_path = reports_by_year[self.selected_year]["path"]
 
-                self.query_one("#message").update(f"Report signed successfully: {signature_path}")
-            
-            except Exception as e:
-                self.query_one("#error_message").update(f"Error signing report: {str(e)}")
-                self.query_one("#message").update("")
-                self.query_one("#password").value = ""
+            signature_path = await asyncio.to_thread(
+                sign_pdf,
+                self.username,
+                pdf_path,
+                self.password,
+            )
+
+            self.query_one("#message").update(f"Report signed successfully: {signature_path}")
+            await asyncio.sleep(2)
+            self.app.pop_screen()
+
+        except Exception as e:
+            self.query_one("#error_message").update(f"Error signing report: {str(e)}")
+            self.query_one("#message").update("")
+            self.query_one("#password").value = ""
