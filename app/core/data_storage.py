@@ -117,3 +117,9 @@ def save_user_keys(username: str, private_key_pem: bytes, public_key_pem: bytes)
 
     with open(public_key_path, "wb") as f:
         f.write(public_key_pem)
+
+def get_user_keys_path(username: str) -> tuple:
+    user_directory = USERS_DIRECTORY / username
+    private_key_path = user_directory / "private_key.pem"
+    public_key_path = user_directory / "public_key.pem"
+    return private_key_path, public_key_path
