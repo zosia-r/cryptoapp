@@ -120,7 +120,7 @@ def derive_encryption_key(password, encryption_salt):
     encryption_key = kdf.derive(password.encode('utf-8'))
 
     if len(encryption_key) != 32:
-        raise ValueError(f"Derived key must be 32 bytes, got {len(key)}")
+        raise ValueError(f"Derived key must be 32 bytes, got {len(encryption_key)} bytes")
 
     return encryption_key
 

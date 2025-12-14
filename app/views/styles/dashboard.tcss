@@ -50,7 +50,7 @@
 }
 
 .dashboard_button {
-    width: 24;
+    width: 30;
     height: 3;
     margin: 0 2;
     background: #6320ee;
@@ -79,4 +79,11 @@
 
 #year_selector RadioButton:focus {
     border: tall #37e15a;
+}
+
+#no_records {
+    color: #6320ee;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
 }

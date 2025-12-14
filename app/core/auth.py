@@ -1,18 +1,12 @@
-import json
 import re
-from app.core import REGISTERED_USERS_PATH, USERS_DIRECTORY, REPORTS_DIRECTORY
 from app.cryptography import pw_management as pw
+from app.core.data_storage import ( save_registered_users, load_registered_users, 
+                                   create_user_file, create_user_report_directory, 
+                                   save_user_keys
+                                    )
+from app.cryptography import rsa as rsa
 
 # REGISTER
-def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
-    try:
-        with open(registered_users_path, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return {"users": []}
-    except json.JSONDecodeError:
-        return {"users": []}
-    
 def register_user(username, password):
     users = load_registered_users()["users"]
     
@@ -25,32 +19,14 @@ def register_user(username, password):
     users.append({"username": username, "password": 
                   {"password_data": password_data, "encryption_salt": encryption_salt}})
 
+    private_key_pem, public_key_pem = rsa.get_rsa_key_pair_pem(password.encode())
+    save_user_keys(username, private_key_pem, public_key_pem)
+
     save_registered_users({"users": users})
     create_user_file(username)
     create_user_report_directory(username)
     print(f"Registered users: {users}")
     return True
-
-def save_registered_users(data, registered_users_path=REGISTERED_USERS_PATH):
-    with open(registered_users_path, "w") as file:
-        json.dump(data, file, indent=4)
-
-def create_user_file(username, users_directory=USERS_DIRECTORY):
-    user_file_path = users_directory / f"{username}.json"
-    
-    if not user_file_path.exists():
-        data = {
-            "data": {
-                "expenses": [],
-                "incomes": []
-            }
-        }
-        with open(user_file_path, "w") as file:
-            json.dump(data, file, indent=4)
-
-def create_user_report_directory(username, reports_directory=REPORTS_DIRECTORY):
-    user_report_dir = reports_directory / username
-    user_report_dir.mkdir(parents=True, exist_ok=True)
 
 def is_strong_password(password):
     """
@@ -86,10 +62,12 @@ def authenticate_user(username, password):
 
     for user in users:
         if user["username"] == username:
-            scrypt_config = user["password"]["password_data"]
-            encryption_salt = user["password"]["encryption_salt"]
-            encryption_key = pw.verify_password(password, scrypt_config, encryption_salt)
-            print("Successfully authenticated!")
-            return encryption_key
+            try:
+                scrypt_config = user["password"]["password_data"]
+                encryption_salt = user["password"]["encryption_salt"]
+                encryption_key = pw.verify_password(password, scrypt_config, encryption_salt)
+                return encryption_key
+            except Exception:
+                return None
     
     return None
