@@ -33,7 +33,7 @@ class DashboardView(Screen):
                     yield Button("Sign Report", classes="dashboard_button", id="sign_report_btn")    
                     yield Button("Verify Report", classes="dashboard_button", id="verify_report_btn")
 
-                yield Static("Cryptography 2025 – Zofia Różańska & Selina Zundel", id="credits")
+        yield Static("Cryptography 2025 – Zofia Różańska & Selina Zundel", id="credits")
 
     def on_mount(self):
         self.query_one("#add_expense_btn").focus()
