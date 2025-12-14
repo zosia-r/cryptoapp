@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.widgets import Button, Input, Label, Static, RadioSet, RadioButton
 from textual.containers import Vertical, Horizontal
 
-from app.cryptography.rsa import sign_file
+from app.cryptography.rsa import sign_pdf
 
 from app.core.report import get_unsigned_reports
 
@@ -53,6 +53,10 @@ class SignView(Screen):
                     return
             
             self.password = self.query_one("#password").value
+            if not self.password:
+                self.query_one("#error_message", Static).update("Please enter your password!")
+                return
+            
             self.query_one("#error_message").update("")
 
             try:
@@ -60,9 +64,10 @@ class SignView(Screen):
                     r["year"]: r for r in get_unsigned_reports(self.username)
                 }
                 pdf_path = reports_by_year[self.selected_year]["path"]
-                sign_file(self.username, pdf_path, self.password)
 
-                self.query_one("#message").update(f"Report signed successfully: {pdf_path}")
+                signature_path = sign_pdf(self.username, pdf_path, self.password)
+
+                self.query_one("#message").update(f"Report signed successfully: {signature_path}")
             
             except Exception as e:
                 self.query_one("#error_message").update(f"Error signing report: {str(e)}")
