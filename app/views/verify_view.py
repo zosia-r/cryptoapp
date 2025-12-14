@@ -4,6 +4,7 @@ from textual.containers import Vertical, Horizontal
 
 from app.core.report_storage import get_signed_reports
 from app.cryptography.rsa import verify_pdf_signature
+from app.pki.verify import verify_user_certificate_by_username
 
 
 class VerifyView(Screen):
@@ -60,17 +61,27 @@ class VerifyView(Screen):
             self.query_one("#message").update("")
 
             report = self.reports_info[self.selected_index]
-            ok = verify_pdf_signature(
+
+            message = ""
+            error_message = ""
+
+            ok_pdf = verify_pdf_signature(
                 self.username,
                 report["path"],
                 report["sig"]
             )
-
-            if ok:
-                self.query_one("#message").update(
-                    "✔ Signature is VALID! Report is authentic."
-                )
+            if ok_pdf:
+                message += "✔ Signature is VALID! Report is authentic."
             else:
-                self.query_one("#error_message").update(
-                    "✖ Signature is INVALID! Report may have been tampered with."
-                )
+                error_message += "✖ Signature is INVALID! Report may have been tampered with."
+            
+            ok_cert = verify_user_certificate_by_username(self.username)
+            if ok_cert == "VALID":
+                message += "\n✔ Certificate chain is VALID! User identity is verified."
+            else:
+                error_message += f"\n✖ Certificate chain is INVALID! Problem with: {ok_cert}."
+
+            self.query_one("#message").update(message)
+            self.query_one("#error_message").update(error_message)
+
+            
