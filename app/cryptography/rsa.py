@@ -5,7 +5,7 @@ from pathlib import Path
 
 from app.core.data_storage import get_user_keys_path
 
-def _generate_rsa_keypair(key_size=2048, public_exponent=65537):
+def generate_rsa_keypair(key_size=2048, public_exponent=65537):
     private_key = rsa.generate_private_key(
         public_exponent=public_exponent,
         key_size=key_size,
@@ -20,7 +20,7 @@ def serialize_public_key(public_key):
     )
     return pem
 
-def _serialize_private_key(private_key, password=None):
+def serialize_private_key(private_key, password=None):
     if password:
         encryption_algorithm = serialization.BestAvailableEncryption(password)
     else:
@@ -51,8 +51,8 @@ def load_public_key(username: str):
     return public_key
 
 def get_rsa_key_pair_pem(password=None):
-    private_key, public_key = _generate_rsa_keypair()
-    private_key_pem = _serialize_private_key(private_key, password)
+    private_key, public_key = generate_rsa_keypair()
+    private_key_pem = serialize_private_key(private_key, password)
     public_key_pem = serialize_public_key(public_key)
     return private_key_pem, public_key_pem
 
