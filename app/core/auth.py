@@ -5,6 +5,7 @@ from app.core.data_storage import ( save_registered_users, load_registered_users
                                    save_user_keys
                                     )
 from app.cryptography import rsa as rsa
+from app.pki.user_cert import issue_user_certificate
 
 # REGISTER
 def register_user(username, password):
@@ -19,8 +20,12 @@ def register_user(username, password):
     users.append({"username": username, "password": 
                   {"password_data": password_data, "encryption_salt": encryption_salt}})
 
+    # Basic RSA
     private_key_pem, public_key_pem = rsa.get_rsa_key_pair_pem(password.encode())
     save_user_keys(username, private_key_pem, public_key_pem)
+
+    # PKI
+    issue_user_certificate(username)
 
     save_registered_users({"users": users})
     create_user_file(username)
