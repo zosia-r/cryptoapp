@@ -4,7 +4,7 @@ from textual.containers import Vertical, Horizontal
 import asyncio
 
 from app.cryptography.rsa import sign_pdf
-from app.core.report_storage import get_unsigned_reports
+from app.core.report_storage import get_all_reports
 
 
 class SignView(Screen):
@@ -15,7 +15,7 @@ class SignView(Screen):
         super().__init__()
         self.username = username
         self.selected_year = None
-        self.reports_info = get_unsigned_reports(self.username)
+        self.reports_info = get_all_reports(self.username)
         self.password = ""
 
     def compose(self):
@@ -67,7 +67,7 @@ class SignView(Screen):
     async def sign_report_async(self):
         try:
             reports_by_year = {
-                r["year"]: r for r in get_unsigned_reports(self.username)
+                r["year"]: r for r in get_all_reports(self.username)
             }
             pdf_path = reports_by_year[self.selected_year]["path"]
 
