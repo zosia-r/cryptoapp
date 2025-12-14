@@ -1,6 +1,7 @@
 from pathlib import Path
 
-DATA_PATH = Path(__file__).resolve().parent.parent / "data"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+DATA_PATH = PROJECT_ROOT / "data"
 REGISTERED_USERS_PATH = DATA_PATH / "registered.json"
 USERS_DIRECTORY = DATA_PATH / "users"
 
