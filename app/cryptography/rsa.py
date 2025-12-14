@@ -80,7 +80,33 @@ def sign_pdf(username: str,
     )
 
     # Store signature
-    sig_path = pdf_path.with_suffix(".sig")
+    sig_path = pdf_path.with_name(pdf_path.name + ".sig")
     sig_path.write_bytes(signature)
 
     return sig_path
+
+
+def verify_pdf_signature(
+        username: str,
+        pdf_path: str,
+        sig_path: str,
+        ) -> bool:
+
+    pdf_bytes = Path(pdf_path).read_bytes()
+    signature = Path(sig_path).read_bytes()
+
+    public_key = load_public_key(username)
+
+    try:
+        public_key.verify(
+            signature,
+            pdf_bytes,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH,
+            ),
+            hashes.SHA256(),
+        )
+        return True
+    except InvalidSignature:
+        return False

@@ -3,7 +3,6 @@ from textual.widgets import Button, Input, Label, Static, RadioSet, RadioButton
 from textual.containers import Vertical, Horizontal
 
 from app.cryptography.rsa import sign_pdf
-
 from app.core.report import get_unsigned_reports
 
 class SignView(Screen):
@@ -19,7 +18,8 @@ class SignView(Screen):
 
     def compose(self):
         with Vertical(id="main-container"):
-            yield Label("Select year to sign:", id="title")
+            yield Label("Select report to sign:", id="title")
+
             if self.reports_info:
                 yield RadioSet(
                     *[
@@ -36,7 +36,7 @@ class SignView(Screen):
             yield Static("", id="message")
             with Horizontal(id="button_row"):
                 if self.reports_info:
-                    yield Button("Submit", id="submit_btn")
+                    yield Button("Sign", id="submit_btn")
                 yield Button("Back", id="back_btn")
             yield Static("Cryptography 2025 – Zofia Różańska & Selina Zundel", id="credits")
 
@@ -71,3 +71,5 @@ class SignView(Screen):
             
             except Exception as e:
                 self.query_one("#error_message").update(f"Error signing report: {str(e)}")
+                self.query_one("#message").update("")
+                self.query_one("#password").value = ""
