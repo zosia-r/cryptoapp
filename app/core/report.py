@@ -20,6 +20,33 @@ from app.core.data_storage import load_user_data, get_reports_dir
 from app.cryptography import auth_encry
 
 
+
+def get_unsigned_reports(username: str) -> List[Dict[str, str]]:
+    reports_dir = get_reports_dir(username)
+
+    if not reports_dir.exists():
+        return []
+
+    unsigned_reports = []
+
+    for pdf_path in reports_dir.glob("*.pdf"):
+        sig_path = pdf_path.with_suffix(pdf_path.suffix + ".sig")
+
+        if not sig_path.exists():
+            stem = pdf_path.stem
+            if stem.startswith("report_year_"):
+                year = int(stem.replace("report_year_", ""))
+            else:
+                year = None
+
+            unsigned_reports.append({
+                "filename": pdf_path.name,
+                "path": str(pdf_path),
+                "year": year,
+            })
+
+    return sorted(unsigned_reports, key=lambda x: x["filename"], reverse=True)
+
 def decrypt_item_fields(item: dict, key: bytes, aad: bytes) -> dict:
     # item values are base64 strings -> decrypt -> bytes -> decode to text
     out = {}
