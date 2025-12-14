@@ -80,3 +80,10 @@
 #year_selector RadioButton:focus {
     border: tall #37e15a;
 }
+
+#no_records {
+    color: #6320ee;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}

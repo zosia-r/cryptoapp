@@ -26,17 +26,23 @@ class ReportSelectorView(Screen):
     def compose(self):
         with Vertical(id="main-container"):
             yield Label("Select year to generate report:", id="title")
-            yield RadioSet(
-                *[
-                    RadioButton(f"{year}: {count} {'record' if count == 1 else 'records'}", id=f"year_{year}")
-                    for year, count in self.years_info.items()
-                ],
-                id="year_selector"
-            )
+            
+            if self.years_info:
+                yield RadioSet(
+                    *[
+                        RadioButton(f"{year}: {count} {'record' if count == 1 else 'records'}", id=f"year_{year}")
+                        for year, count in self.years_info.items()
+                    ],
+                    id="year_selector"
+                )
+            else:
+                yield Static("No records found for this user.", id="no_records")
+            
             yield Static("", id="error_message")
             yield Static("", id="message")
             with Horizontal(id="button_row"):
-                yield Button("Submit", id="submit_btn")
+                if self.years_info:
+                    yield Button("Submit", id="submit_btn")
                 yield Button("Back", id="back_btn")
             yield Static("Cryptography 2025 – Zofia Różańska & Selina Zundel", id="credits")
 
