@@ -3,7 +3,7 @@ from textual.widgets import Button, Input, Label, Static, RadioSet, RadioButton
 from textual.containers import Vertical, Horizontal
 
 from app.cryptography.rsa import sign_pdf
-from app.core.report import get_unsigned_reports
+from app.core.report_storage import get_unsigned_reports
 
 class SignView(Screen):
 

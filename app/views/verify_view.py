@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.widgets import Button, RadioSet, RadioButton, Label, Static
 from textual.containers import Vertical, Horizontal
 
-from app.core.report import get_signed_reports
+from app.core.report_storage import get_signed_reports
 from app.cryptography.rsa import verify_pdf_signature
 
 
