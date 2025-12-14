@@ -86,7 +86,7 @@ class IncomeView(Screen):
 
             self.query_one("#amount", Input).value = ""
             self.query_one("#date_input", Input).value = ""
-            self.query_one("#amount").focus()
+            self.query_one("#back_btn").focus()
 
         elif event.button.id == "back_btn":
             self.app.pop_screen()
