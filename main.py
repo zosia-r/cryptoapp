@@ -1,7 +1,8 @@
 from app import CryptoApp
-from app.pki.setup import setup_pki
+from app.pki.setup import setup_pki, is_pki_setup
 
 if __name__ == "__main__":
-    setup_pki()
+    if not is_pki_setup():
+        setup_pki()
     app = CryptoApp()
     app.run()

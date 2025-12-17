@@ -77,3 +77,15 @@ def setup_pki(root_name=ROOT_NAME, ca_names=CA_NAMES, root_password=ROOT_PASSWOR
         ca_cert = create_cert_signed_by_ca(ca_key, root_cert, root_key, ca_name)
         write_key_and_cert(ca_key, ca_cert, get_ca_key_path(ca_name), get_ca_cert_path(ca_name), ca_password)
 
+def is_pki_setup() -> bool:
+    if not PKI_DIR.exists():
+        return False
+    if not get_root_key_path().exists() or not get_root_cert_path().exists():
+        return False
+    for ca_name in CA_NAMES:
+        if not get_ca_key_path(ca_name).exists() or not get_ca_cert_path(ca_name).exists():
+            return False
+    if not get_users_dir().exists():
+        return False
+    return True
+
