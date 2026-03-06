@@ -50,10 +50,10 @@ def get_all_users():
     users = []
     for row in rows:
         users.append({
-            "username": row["username"],
+            "username": row[0],
             "password": {
-                "password_data": row["password_data"],
-                "encryption_salt": row["encryption_salt"],
+                "password_data": row[1],
+                "encryption_salt": row[2],
             }
         })
 
