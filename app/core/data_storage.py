@@ -3,7 +3,7 @@ from datetime import datetime
 import sqlite3
 from app.core import USERS_DIRECTORY, REGISTERED_USERS_PATH
 from app.cryptography import auth_encry
-from app.db.db import get_connection, get_all_users, add_user
+import app.db.db as db
 
 # USER DATA STORAGE
 def load_user_data(username: str) -> dict:
@@ -24,14 +24,14 @@ def save_user_data(username: str, data: dict) -> None:
 
 # REGISTERED USERS STORAGE
 def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
-    return get_all_users()
+    return db.get_all_users()
     
 def save_registered_users(data, registered_users_path=REGISTERED_USERS_PATH):
     with open(registered_users_path, "w") as file:
         json.dump(data, file, indent=4)
 
 def save_user(username, password_data, encryption_salt):
-    add_user(username, password_data, encryption_salt)
+    db.add_user(username, password_data, encryption_salt)
 
 # USER SETUP
 def create_user_file(username, users_directory=USERS_DIRECTORY):
@@ -56,7 +56,6 @@ def create_user_report_directory(username, users_directory=USERS_DIRECTORY):
 # USER DATA MANAGEMENT
 def add_income(username: str, encryption_key, amount: float, category: str, date_str: str) -> None:
     type = "income"
-    data = load_user_data(username)["data"]
 
     # todo: fix datatypes to bytes
     amount_encry = auth_encry.encrypt_data(encryption_key, str(amount).encode('utf-8'), (username + type).encode('utf-8'))
@@ -64,23 +63,11 @@ def add_income(username: str, encryption_key, amount: float, category: str, date
     date_encry = auth_encry.encrypt_data(encryption_key, date_str.encode('utf-8'), (username + type).encode('utf-8'))
     timestamp_encry = auth_encry.encrypt_data(encryption_key, datetime.now().isoformat().encode('utf-8'), (username + type).encode('utf-8'))
 
-
-    data["incomes"].append({
-        "amount": amount_encry,
-        "category": category_encry,
-        "date": date_encry,
-        "timestamp": timestamp_encry
-    })
-
-    save_user_data(username, {"data": data})
+    db.add_transaction(username, type, amount_encry, category_encry, date_encry, timestamp_encry)
 
 
 def add_expense(username: str, encryption_key, amount: float, category: str, date_str: str) -> None:
     type = "expense"
-    data = load_user_data(username)["data"]
-
-    if len(encryption_key) != 32:
-        raise ValueError(f"Add expense key must be 32 bytes, got {len(encryption_key)}")
 
     # todo: fix datatypes to bytes
     amount_encry = auth_encry.encrypt_data(encryption_key, str(amount).encode('utf-8'), (username + type).encode('utf-8'))
@@ -88,14 +75,7 @@ def add_expense(username: str, encryption_key, amount: float, category: str, dat
     date_encry = auth_encry.encrypt_data(encryption_key, date_str.encode('utf-8'), (username + type).encode('utf-8'))
     timestamp_encry = auth_encry.encrypt_data(encryption_key, datetime.now().isoformat().encode('utf-8'), (username + type).encode('utf-8'))
 
-    data["expenses"].append({
-        "amount": amount_encry,
-        "category": category_encry,
-        "date": date_encry,
-        "timestamp": timestamp_encry
-    })
-
-    save_user_data(username, {"data": data})
+    db.add_transaction(username, type, amount_encry, category_encry, date_encry, timestamp_encry)
 
 # REPORT STORAGE
 def get_reports_dir(username: str) -> str:
