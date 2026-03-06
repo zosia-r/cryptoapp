@@ -2,7 +2,7 @@ import re
 from app.cryptography import pw_management as pw
 from app.core.data_storage import ( save_registered_users, load_registered_users, 
                                    create_user_file, create_user_report_directory, 
-                                   save_user_keys
+                                   save_user_keys, save_user
                                     )
 from app.cryptography import rsa as rsa
 from app.pki.user_cert import issue_user_certificate
@@ -17,9 +17,7 @@ def register_user(username, password):
     
     password_data, encryption_salt = pw.create_password_data(password)
     # TODO change "password" to "key" -> change name of field
-    users.append({"username": username, "password": 
-                  {"password_data": password_data, "encryption_salt": encryption_salt}})
-
+    save_user(username, password_data, encryption_salt)
     # Basic RSA
     private_key_pem, public_key_pem = rsa.get_rsa_key_pair_pem(password.encode())
     save_user_keys(username, private_key_pem, public_key_pem)
@@ -27,7 +25,6 @@ def register_user(username, password):
     # PKI
     issue_user_certificate(username)
 
-    save_registered_users({"users": users})
     create_user_file(username)
     create_user_report_directory(username)
     print(f"Registered users: {users}")

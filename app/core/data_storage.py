@@ -1,7 +1,9 @@
 import json
 from datetime import datetime
+import sqlite3
 from app.core import USERS_DIRECTORY, REGISTERED_USERS_PATH
 from app.cryptography import auth_encry
+from app.db.db import get_connection, get_all_users, add_user
 
 # USER DATA STORAGE
 def load_user_data(username: str) -> dict:
@@ -22,17 +24,14 @@ def save_user_data(username: str, data: dict) -> None:
 
 # REGISTERED USERS STORAGE
 def load_registered_users(registered_users_path=REGISTERED_USERS_PATH):
-    try:
-        with open(registered_users_path, "r") as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return {"users": []}
-    except json.JSONDecodeError:
-        return {"users": []}
+    return get_all_users()
     
 def save_registered_users(data, registered_users_path=REGISTERED_USERS_PATH):
     with open(registered_users_path, "w") as file:
         json.dump(data, file, indent=4)
+
+def save_user(username, password_data, encryption_salt):
+    add_user(username, password_data, encryption_salt)
 
 # USER SETUP
 def create_user_file(username, users_directory=USERS_DIRECTORY):
