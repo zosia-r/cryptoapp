@@ -61,14 +61,6 @@ def get_all_users():
 
     return {"users": users}
 
-def add_user(username, password_data, encryption_salt):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO users (username, password_data, encryption_salt) VALUES (?, ?, ?)',
-                   (username, password_data, encryption_salt))
-    conn.commit()
-    conn.close()
-
 # Transaction management functions
 def add_transaction(username, type, amount, category, date, timestamp):
     conn = get_connection()
@@ -87,5 +79,12 @@ def get_transactions(username, type=None):
     else:
         cursor.execute('SELECT * FROM transactions WHERE username = ?', (username,))
     transactions = cursor.fetchall()
+
+    transactions = [{
+        "amount": row[3],
+        "category": row[4],
+        "date": row[5],
+        "timestamp": row[6]
+    } for row in transactions]
     conn.close()
     return transactions

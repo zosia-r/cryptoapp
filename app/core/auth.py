@@ -1,7 +1,7 @@
 import re
 from app.cryptography import pw_management as pw
-from app.core.data_storage import ( save_registered_users, load_registered_users, 
-                                   create_user_file, create_user_report_directory, 
+from app.core.data_storage import ( load_registered_users, 
+                                   create_user_report_directory, 
                                    save_user_keys, save_user
                                     )
 from app.cryptography import rsa as rsa
@@ -25,7 +25,7 @@ def register_user(username, password):
     # PKI
     issue_user_certificate(username)
 
-    create_user_file(username)
+    # create_user_file(username)
     create_user_report_directory(username)
     print(f"Registered users: {users}")
     return True
