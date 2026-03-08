@@ -18,6 +18,8 @@ from app.core.data_storage import load_user_data, get_reports_dir
 
 from app.cryptography import auth_encry
 
+import app.db.db as db
+
 
 
 def decrypt_item_fields(item: dict, key: bytes, aad: bytes) -> dict:
@@ -30,8 +32,8 @@ def decrypt_item_fields(item: dict, key: bytes, aad: bytes) -> dict:
 
 def get_years_for_user(username: str, encryption_key: bytes) -> dict[int, int]:
         data = load_user_data(username)["data"]
-        expenses = data.get("expenses", [])
-        incomes = data.get("incomes", [])
+        expenses = db.get_transactions(username, type="expense")
+        incomes = db.get_transactions(username, type="income")
 
         years = {}
 
@@ -236,13 +238,11 @@ class ReportGenerator:
 
     # ====================== BUILD REPORT STRUCTURE ======================
     def _build_structure(self):
-        raw = load_user_data(self.username)["data"]
-
         expense_aad = (self.username + "expense").encode("utf-8")
         income_aad  = (self.username + "income").encode("utf-8")
 
-        expenses_dec = self._decrypt_entries(raw["expenses"], expense_aad)
-        incomes_dec  = self._decrypt_entries(raw["incomes"], income_aad)
+        expenses_dec = self._decrypt_entries(db.get_transactions(self.username, type="expense"), expense_aad)
+        incomes_dec  = self._decrypt_entries(db.get_transactions(self.username, type="income"), income_aad)
 
         expenses = self._filter_year(expenses_dec)
         incomes  = self._filter_year(incomes_dec)
